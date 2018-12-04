@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Action\Task\Assign as TaskAssign;
 use AppBundle\Action\Task\Done as TaskDone;
 use AppBundle\Action\Task\Failed as TaskFailed;
 use AppBundle\Action\Task\UnassignedTasks;
@@ -58,6 +59,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *       "path"="/tasks/{id}/failed",
  *       "controller"=TaskFailed::class,
  *       "access_control"="is_granted('ROLE_COURIER') and object.isAssignedTo(user)"
+ *     },
+ *     "task_assign"={
+ *       "method"="PUT",
+ *       "path"="/tasks/{id}/assign",
+ *       "controller"=TaskAssign::class,
+ *       "access_control"="is_granted('ROLE_ADMIN') or is_granted('ROLE_COURIER')"
  *     }
  *   }
  * )

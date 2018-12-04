@@ -107,7 +107,6 @@ Feature: Dispatch
       }
       """
 
-  @debug
   Scenario: Create task list
     Given the fixtures file "dispatch.yml" is loaded
     And the user "sarah" has role "ROLE_COURIER"
@@ -123,3 +122,54 @@ Feature: Dispatch
       }
       """
     Then the response status code should be 201
+
+  Scenario: Assign task
+    Given the fixtures file "dispatch.yml" is loaded
+    And the user "bob" has role "ROLE_ADMIN"
+    And the user "bob" is authenticated
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
+    And the user "bob" sends a "PUT" request to "/api/tasks/4/assign" with body:
+      """
+      {
+        "username": "sarah"
+      }
+      """
+    Then the response status code should be 200
+    And the JSON should match:
+      """
+      {
+        "@context":"/api/contexts/Task",
+        "@id":"/api/tasks/4",
+        "@type":"Task",
+        "id":4,
+        "type":"DROPOFF",
+        "status":"TODO",
+        "address":@...@,
+        "doneAfter":"2018-12-02T12:00:00+01:00",
+        "doneBefore":"2018-12-02T12:30:00+01:00",
+        "comments":null,
+        "events":[
+          {
+            "name":"task:assigned",
+            "data":{
+              "username":"sarah"
+            },
+            "createdAt":"@string@.isDateTime()"
+          },
+          {
+            "name":"task:created",
+            "data":[],
+            "createdAt":"@string@.isDateTime()"
+          }
+        ],
+        "updatedAt":"@string@.isDateTime()",
+        "isAssigned":true,
+        "assignedTo":"sarah",
+        "previous":null,
+        "next":null,
+        "deliveryColor":null,
+        "group":null,
+        "tags":@array@
+      }
+      """

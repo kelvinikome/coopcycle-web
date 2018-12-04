@@ -3,10 +3,7 @@
 namespace AppBundle\Action\Task;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-// use AppBundle\Entity\TaskRepository;
 use AppBundle\Entity\Task;
-// use AppBundle\Exception\PreviousTaskNotCompletedException;
-// use AppBundle\Exception\TaskCancelledException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
