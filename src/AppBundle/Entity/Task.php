@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Action\Task\Done as TaskDone;
 use AppBundle\Action\Task\Failed as TaskFailed;
+use AppBundle\Action\Task\UnassignedTasks;
 use AppBundle\Entity\Task\Group as TaskGroup;
 use AppBundle\Entity\Model\TaggableInterface;
 use AppBundle\Entity\Model\TaggableTrait;
@@ -21,6 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   },
  *   collectionOperations={
  *     "get"={"method"="GET"},
+ *     "post"={
+ *       "method"="POST",
+ *       "access_control"="is_granted('ROLE_ADMIN')",
+ *       "denormalization_context"={"groups"={"task", "place"}},
+ *     },
  *     "my_tasks" = {
  *       "route_name" = "my_tasks",
  *       "swagger_context" = {
@@ -31,6 +37,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *           "type" = "string"
  *         }}
  *       }
+ *     },
+ *     "unassigned_tasks"={
+ *       "method"="GET",
+ *       "path"="/tasks/{date}/unassigned",
+ *       "controller"=UnassignedTasks::class,
+ *       "access_control"="is_granted('ROLE_ADMIN')"
  *     }
  *   },
  *   itemOperations={
@@ -80,7 +92,7 @@ class Task implements TaggableInterface
     private $delivery;
 
     /**
-     * @Groups({"task"})
+     * @Groups({"task", "place"})
      */
     private $address;
 
