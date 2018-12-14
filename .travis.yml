@@ -94,8 +94,10 @@ before_script:
   - node_modules/.bin/encore dev
   # - php bin/console server:start 127.0.0.1:8080
   - sudo cp .travis/travis-nginx-conf /etc/nginx/sites-available/test.coopcycle.org
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/test.coopcycle.org
-  - sudo ln -s /etc/nginx/sites-available/test.coopcycle.org /etc/nginx/sites-enabled/
+  - sudo ls -l /etc/nginx/sites-available
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/test.coopcycle.org.conf
+  - sudo ln -s /etc/nginx/sites-available/test.coopcycle.org.conf /etc/nginx/sites-enabled/
+  - sudo service nginx -c /etc/nginx/sites-available/test.coopcycle.org.conf -t
   - sudo service nginx restart
   - cp phpunit.xml.dist phpunit.xml
   - pm2 start pm2.config.js --env=test
