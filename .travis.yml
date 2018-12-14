@@ -87,6 +87,7 @@ before_script:
   - psql -U postgres -c 'CREATE DATABASE coopcycle_test;'
   - psql -U postgres -d coopcycle_test -c 'CREATE EXTENSION postgis;'
   - psql -U postgres -d coopcycle_test -c 'CREATE EXTENSION postgis_topology;'
+  - php bin/console doctrine:schema:create --env=test
   # Install PHP app
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   # - composer install --prefer-dist
