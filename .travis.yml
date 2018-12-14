@@ -98,7 +98,7 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/test.coopcycle.org.conf
   - sudo ln -s /etc/nginx/sites-available/test.coopcycle.org.conf /etc/nginx/sites-enabled/
   # - sudo service nginx configtest
-  - sudo /usr/nginx/sbin/nginx -t -c /etc/nginx/sites-available/test.coopcycle.org.conf
+  - sudo nginx -t -c /etc/nginx/sites-available/test.coopcycle.org.conf
   - sudo service nginx restart
   - cp phpunit.xml.dist phpunit.xml
   - pm2 start pm2.config.js --env=test
