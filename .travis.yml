@@ -59,7 +59,6 @@ install:
   # Remove error could not access file "$libdir/postgis-2.3": No such file or directory
   - sudo apt-get install -y $(apt-cache search postgis | awk '/^postgresql-9\.[2-5]-postgis-2.3/{printf " "$1}' )
   - sudo service postgresql restart
-  # - sudo apt-get install -y --force-yes php7.2-fpm
   - npm install
   - npm install -g pm2
   # Install OSRM
@@ -107,10 +106,10 @@ before_script:
   # - php bin/console server:start 127.0.0.1:8080
   - sudo sed -i -e 's/www-data/travis/g' /etc/nginx/nginx.conf
   - sudo cp .travis/travis-nginx-conf /etc/nginx/sites-available/test.coopcycle.org.conf
-  - sudo ls -l /etc/nginx/sites-available
+  # - sudo ls -l /etc/nginx/sites-available
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/test.coopcycle.org.conf
   - sudo ln -s /etc/nginx/sites-available/test.coopcycle.org.conf /etc/nginx/sites-enabled/
-  - cat /etc/nginx/sites-enabled/test.coopcycle.org.conf
+  # - cat /etc/nginx/sites-enabled/test.coopcycle.org.conf
   # - sudo service nginx configtest
   - sudo nginx -t
   - sudo service nginx restart
