@@ -10,7 +10,7 @@ server {
 
     listen 80;
 
-    server_name site.localhost;
+    server_name test.coopcycle.org;
 
     root %TRAVIS_BUILD_DIR%/web;
 
