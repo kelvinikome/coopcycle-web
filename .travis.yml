@@ -101,7 +101,7 @@ before_script:
   - sudo ln -s /etc/nginx/sites-available/test.coopcycle.org.conf /etc/nginx/sites-enabled/
   - cat /etc/nginx/sites-enabled/test.coopcycle.org.conf
   # - sudo service nginx configtest
-  - sudo nginx -t -c /etc/nginx/sites-available/test.coopcycle.org.conf
+  - sudo nginx -t
   - sudo service nginx restart
   - cp phpunit.xml.dist phpunit.xml
   - pm2 start pm2.config.js --env=test
