@@ -77,7 +77,8 @@ server {
     # This rule should only be placed on your test environment
     # In production, don't include this and don't deploy app_test.php or config.php
     location ~ ^/(app_test|config)\.php(/|$) {
-        fastcgi_pass php:9000;
+        fastcgi_pass 127.0.0.1:9000;
+        # fastcgi_pass unix:/var/run/php7.2-fpm.sock;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
         fastcgi_param PHP_VALUE "date.timezone=Europe/Paris";
