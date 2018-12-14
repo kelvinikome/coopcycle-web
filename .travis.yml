@@ -48,12 +48,6 @@ env:
 before_install:
   - sudo apt-get update -qq
   - nvm install 8
-  - ls -l /etc/nginx
-  - cat /etc/nginx/nginx.conf
-  - ls -la web/
-  # - find ~/.phpenv/versions/$(phpenv version-name)/
-  # - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
-  # - cat /etc/nginx/sites-enabled/default
 install:
   # Remove error could not access file "$libdir/postgis-2.3": No such file or directory
   - sudo apt-get install -y $(apt-cache search postgis | awk '/^postgresql-9\.[2-5]-postgis-2.3/{printf " "$1}' )
@@ -100,16 +94,15 @@ before_script:
   # https://github.com/coopcycle/coopcycle-web/issues/492
   - curl -sS https://getcomposer.org/installer | php -- --version=1.7.2
   - php composer.phar install --prefer-dist
+  - php bin/console cache:warmup --env=test
   - php bin/console doctrine:schema:create --env=test
   - node_modules/.bin/encore dev
   # - php bin/console server:start 127.0.0.1:8080
+  # Configure Nginx
   - sudo sed -i -e 's/www-data/travis/g' /etc/nginx/nginx.conf
   - sudo cp .travis/travis-nginx-conf /etc/nginx/sites-available/test.coopcycle.org.conf
-  # - sudo ls -l /etc/nginx/sites-available
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/test.coopcycle.org.conf
   - sudo ln -s /etc/nginx/sites-available/test.coopcycle.org.conf /etc/nginx/sites-enabled/
-  # - cat /etc/nginx/sites-enabled/test.coopcycle.org.conf
-  # - sudo service nginx configtest
   - sudo nginx -t
   - sudo service nginx restart
   - cp phpunit.xml.dist phpunit.xml
