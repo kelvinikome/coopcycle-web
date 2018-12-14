@@ -93,7 +93,7 @@ before_script:
   - php bin/console doctrine:schema:create --env=test
   - node_modules/.bin/encore dev
   # - php bin/console server:start 127.0.0.1:8080
-  - sudo cp .travis/travis-nginx-conf /etc/nginx/sites-available/test.coopcycle.org
+  - sudo cp .travis/travis-nginx-conf /etc/nginx/sites-available/test.coopcycle.org.conf
   - sudo ls -l /etc/nginx/sites-available
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/test.coopcycle.org.conf
   - sudo ln -s /etc/nginx/sites-available/test.coopcycle.org.conf /etc/nginx/sites-enabled/
