@@ -17,6 +17,8 @@ addons:
     packages:
       - nginx
       # - php7.2-fpm
+  hosts:
+    - site.localhost
 
 language: php
 php:
@@ -69,6 +71,7 @@ install:
 before_script:
   - phpenv config-rm xdebug.ini
   # Enable php-fpm
+  # @see https://docs.travis-ci.com/user/languages/php/
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   # Configure JSON Web Token
@@ -88,12 +91,18 @@ before_script:
   - php composer.phar install --prefer-dist
   - php bin/console doctrine:schema:create --env=test
   - node_modules/.bin/encore dev
-  - php bin/console server:start 127.0.0.1:8080
+  # - php bin/console server:start 127.0.0.1:8080
+  - sudo cp .travis/travis-nginx-conf /etc/nginx/sites-available/site.localhost
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/site.localhost
+  - sudo ln -s /etc/nginx/sites-available/site.localhost /etc/nginx/sites-enabled/
+  - sudo service nginx restart
   - cp phpunit.xml.dist phpunit.xml
   - pm2 start pm2.config.js --env=test
 
 script:
   # - curl 'http://localhost:5000/route/v1/bicycle/2.3706188,48.877821;2.385706,48.887031?overview=full'
+  - cat /etc/nginx/sites-available/site.localhost
+  - curl http://site.localhost
   - phpunit
   - php vendor/bin/behat -f progress
   - node node_modules/.bin/mocha --require @babel/register --exit js/tests/
