@@ -80,12 +80,13 @@ before_script:
   # Enable php-fpm
   # @see https://docs.travis-ci.com/user/languages/php/
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - sudo sed -i -e 's/user = nobody/user = www-data/g' ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
-  - sudo sed -i -e 's/group = nobody/group = www-data/g' ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+  # - sudo sed -i -e 's/user = nobody/user = www-data/g' ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+  # - sudo sed -i -e 's/group = nobody/group = www-data/g' ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+  # - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  # - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
   # Make sure to use sudo
-  - sudo ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm -R
+  # - sudo ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm -R
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   # Configure JSON Web Token
   - mkdir -p var/jwt
   - openssl genrsa -out var/jwt/private.pem 4096
@@ -104,7 +105,7 @@ before_script:
   - php bin/console doctrine:schema:create --env=test
   - node_modules/.bin/encore dev
   # - php bin/console server:start 127.0.0.1:8080
-  - sudo sed -i -e 's/www-data/travis/g' /etc/apache2/envvars
+  - sudo sed -i -e 's/www-data/travis/g' /etc/nginx/nginx.conf
   - sudo cp .travis/travis-nginx-conf /etc/nginx/sites-available/test.coopcycle.org.conf
   - sudo ls -l /etc/nginx/sites-available
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$TRAVIS_BUILD_DIR?g" --in-place /etc/nginx/sites-available/test.coopcycle.org.conf
