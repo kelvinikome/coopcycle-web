@@ -89,6 +89,7 @@ before_script:
   # https://github.com/coopcycle/coopcycle-web/issues/492
   - curl -sS https://getcomposer.org/installer | php -- --version=1.7.2
   - php composer.phar install --prefer-dist
+  - ls -l vendor
   - php bin/console doctrine:schema:create --env=test
   - php bin/console cache:warmup --env=test
   - node_modules/.bin/encore dev
