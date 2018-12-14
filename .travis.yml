@@ -16,7 +16,6 @@ addons:
   apt:
     packages:
       - nginx
-      # - php7.2-fpm
   hosts:
     - test.coopcycle.org
 
