@@ -72,12 +72,6 @@ before_script:
   # Enable php-fpm
   # @see https://docs.travis-ci.com/user/languages/php/
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  # - sudo sed -i -e 's/user = nobody/user = www-data/g' ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
-  # - sudo sed -i -e 's/group = nobody/group = www-data/g' ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
-  # - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  # - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
-  # Make sure to use sudo
-  # - sudo ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm -R
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   # Configure JSON Web Token
   - mkdir -p var/jwt
@@ -95,8 +89,8 @@ before_script:
   # https://github.com/coopcycle/coopcycle-web/issues/492
   - curl -sS https://getcomposer.org/installer | php -- --version=1.7.2
   - php composer.phar install --prefer-dist
-  - php bin/console cache:warmup --env=test
   - php bin/console doctrine:schema:create --env=test
+  - php bin/console cache:warmup --env=test
   - node_modules/.bin/encore dev
   # - php bin/console server:start 127.0.0.1:8080
   # Configure Nginx
